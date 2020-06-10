@@ -24,17 +24,12 @@ class Student
     DB[:conn].execute(sql, self.name, self.grade, self.name)
   end
    
-   def self.find_by_name(name)
-    sql = <<-SQL
-      SELECT *
-      FROM students
-      WHERE name = ?
-      LIMIT 1
-    SQL
- 
-    DB[:conn].execute(sql, name).map do |row|
-      self.new_from_db(row)
-    end.first
+  def self.find_by_name(name)
+
+    sql = "SELECT * FROM students WHERE name = ?"
+
+    result = DB[:conn].execute(sql, name)[0]
+    self.new_from_db(result)
   end
   
    def self.create_table
