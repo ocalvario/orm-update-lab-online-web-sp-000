@@ -20,6 +20,19 @@ class Student
     new_student  
   end
   
+   def self.find_by_name(name)
+    sql = <<-SQL
+      SELECT *
+      FROM students
+      WHERE name = ?
+      LIMIT 1
+    SQL
+ 
+    DB[:conn].execute(sql, name).map do |row|
+      self.new_from_db(row)
+    end.first
+  end
+  
    def self.create_table
     sql =  <<-SQL 
       CREATE TABLE IF NOT EXISTS students (
